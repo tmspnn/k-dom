@@ -14,11 +14,9 @@ export function replaceNode(el: Node, newEl: Node): void;
 
 export function style(el: HTMLElement, styles: object): void;
 
-export function svg(tagName: string, props: any, ...children: Array<HTMLElement>): Element;
+export function svg(tagName: string, props: any, ...children: Array<Element>): Element;
 
 export function readFileAsDataURL(file: File): Promise<string>;
-
-export function sendOnClose(url: string, data: ArrayBuffer | Blob | FormData): void;
 
 export function append(parent: Node, child: Node): void;
 

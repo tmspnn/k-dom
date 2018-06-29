@@ -35,10 +35,10 @@ export function style(el: HTMLElement, styles: object) {
   Object.assign(el.style, styles);
 }
 
-export function svg(tagName: string, props: any = {}, ...children: Array<HTMLElement>): Element {
+export function svg(tagName: string, props: any = {}, ...children: Array<Element>): Element {
   const el = document.createElementNS('http://www.w3.org/2000/svg', tagName);
   Object.keys(props).forEach(key => {
-    el.setAttributeNS(location.origin, key, props[key]);
+    el.setAttributeNS(key == 'xlink:href' ? 'http://www.w3.org/1999/xlink' : location.origin, key, props[key]);
   });
   children.forEach(child => el.appendChild(child));
   return el;
@@ -51,10 +51,6 @@ export function readFileAsDataURL(file: File): Promise<string> {
     reader.onerror = e => reject(e);
     reader.readAsDataURL(file);
   });
-}
-
-export function sendOnClose(url: string, data: ArrayBuffer | Blob | FormData) {
-  window.navigator.sendBeacon(url, data);
 }
 
 export function append(parent: Node, child: Node) {

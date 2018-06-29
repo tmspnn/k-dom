@@ -55,7 +55,7 @@ function svg(tagName, props) {
     }
     var el = document.createElementNS('http://www.w3.org/2000/svg', tagName);
     Object.keys(props).forEach(function (key) {
-        el.setAttributeNS(location.origin, key, props[key]);
+        el.setAttributeNS(key == 'xlink:href' ? 'http://www.w3.org/1999/xlink' : location.origin, key, props[key]);
     });
     children.forEach(function (child) { return el.appendChild(child); });
     return el;
@@ -70,10 +70,6 @@ function readFileAsDataURL(file) {
     });
 }
 exports.readFileAsDataURL = readFileAsDataURL;
-function sendOnClose(url, data) {
-    window.navigator.sendBeacon(url, data);
-}
-exports.sendOnClose = sendOnClose;
 function append(parent, child) {
     parent.appendChild(child);
 }

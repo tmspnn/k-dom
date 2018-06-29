@@ -2,7 +2,7 @@
   "name": "k-dom",
   "version": "0.2.0",
   "description": "Helper functions for DOM manipulation",
-  "main": "src/k-dom.ts",
+  "main": "dist/k-dom.js",
   "scripts": {
     "test": "jest",
     "build": "tsc && NODE_ENV=production webpack"
