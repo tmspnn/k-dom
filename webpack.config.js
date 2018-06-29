@@ -7,7 +7,7 @@ module.exports = {
     path: __dirname + '/dist',
     filename: 'k-dom.min.js',
     library: 'kDom',
-    libraryExport: 'default',
+    // libraryExport: 'default',
     libraryTarget: 'umd'
   },
   module: {
