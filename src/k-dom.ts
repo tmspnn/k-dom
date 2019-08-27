@@ -2,7 +2,11 @@ export function $(sel: string, ctx?: HTMLElement): HTMLElement | null {
   return (ctx || document).querySelector(sel);
 }
 
-export function createEvent(name: string, props: object = {}): CustomEvent {
+export function $$(sel: string, ctx?: HTMLElement): Array<HTMLElement> {
+  return Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
+}
+
+export function createEvent(name: string, props: { [k: string]: any } = {}): CustomEvent {
   return new CustomEvent(name, { detail: props });
 }
 
@@ -10,15 +14,6 @@ export function DocFrag(...els: Array<HTMLElement>): DocumentFragment {
   const docFrag = document.createDocumentFragment();
   els.forEach(el => docFrag.appendChild(el));
   return docFrag;
-}
-
-export function h(tagName: string, props?: object, ...children: Array<HTMLElement>): HTMLElement {
-  const el = document.createElement(tagName);
-  if (props) Object.assign(el, props);
-  children.forEach(child => {
-    el.appendChild(typeof child == 'string' ? document.createTextNode(child) : child);
-  });
-  return el;
 }
 
 export function cloneNode(el: Node): Node {
@@ -31,26 +26,23 @@ export function replaceNode(el: Node, newEl: Node) {
   }
 }
 
-export function style(el: HTMLElement, styles: object) {
-  Object.assign(el.style, styles);
-}
-
-export function svg(tagName: string, props: any = {}, ...children: Array<Element>): Element {
-  const el = document.createElementNS('http://www.w3.org/2000/svg', tagName);
-  Object.keys(props).forEach(key => {
-    el.setAttributeNS(key == 'xlink:href' ? 'http://www.w3.org/1999/xlink' : location.origin, key, props[key]);
-  });
+export function createSVGElement(
+  tagName: string,
+  props: { [k: string]: any } = {},
+  ...children: Array<SVGElement>
+): SVGElement {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+  for (let k in props) {
+    if (props.hasOwnProperty(k)) {
+      el.setAttributeNS(
+        k == "xlink:href" ? "http://www.w3.org/1999/xlink" : location.origin,
+        k,
+        props[k]
+      );
+    }
+  }
   children.forEach(child => el.appendChild(child));
   return el;
-}
-
-export function readFileAsDataURL(file: File): Promise<string> {
-  return new Promise((resolve: (dataUrl: string) => any, reject: (e: any) => any) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = e => reject(e);
-    reader.readAsDataURL(file);
-  });
 }
 
 export function append(parent: Node, child: Node) {
@@ -61,8 +53,33 @@ export function prepend(parent: Node, child: Node) {
   parent.insertBefore(child, parent.firstChild);
 }
 
-export function string2El(s: string): Element | null {
-  const div = document.createElement('div');
-  div.innerHTML = s;
-  return div.firstElementChild;
+const parser = typeof DOMParser == "undefined" ? null : new DOMParser();
+export function html2DOM(html: string): null | HTMLElement {
+  if (!parser) return null;
+  const doc = parser.parseFromString(html, "text/html");
+  return doc.body.firstChild as HTMLElement;
+}
+
+export function addClass(el: HTMLElement, ...classNames: string[]) {
+  el.classList.add(...classNames);
+}
+
+export function removeClass(el: HTMLElement, ...classNames: string[]) {
+  el.classList.remove(...classNames);
+}
+
+export function hasClass(el: HTMLElement, className: string) {
+  return el.classList.contains(className);
+}
+
+export function on(el: HTMLElement, eventNames: string, handler: (e: Event) => void) {
+  eventNames.trim().split(" ").forEach(eventName => {
+    el.addEventListener(eventName, handler);
+  });
+}
+
+export function off(el: HTMLElement, eventNames: string, handler: (e: Event) => void) {
+  eventNames.trim().split(" ").forEach(eventName => {
+    el.removeEventListener(eventName, handler);
+  });
 }
