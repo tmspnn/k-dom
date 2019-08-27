@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "description": "Helper functions for DOM manipulation",
   "main": "dist/k-dom.js",
-  "types": "src/k-dom.d.ts",
+  "types": "types/k-dom.d.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc && NODE_ENV=production webpack"
@@ -19,10 +19,10 @@
   "author": "Thomas Peng",
   "license": "MIT",
   "devDependencies": {
-    "awesome-typescript-loader": "^5.0.0",
-    "jest": "^23.1.0",
-    "jsdom": "^11.11.0",
-    "source-map-loader": "^0.2.3",
-    "typescript": "^2.9.2"
+    "awesome-typescript-loader": "^5.2.1",
+    "jest": "^24.9.0",
+    "jsdom": "^15.1.1",
+    "source-map-loader": "^0.2.4",
+    "typescript": "^3.5.3"
   }
 }
