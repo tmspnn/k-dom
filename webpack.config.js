@@ -1,27 +1,25 @@
-'use strict';
-
 module.exports = {
-  entry: __dirname + '/src/k-dom.ts',
-  mode: 'production',
+  mode: "production",
+  devtool: "cheap-eval-source-map",
+  entry: __dirname + "/src/k-dom.ts",
   output: {
-    path: __dirname + '/dist',
-    filename: 'k-dom.min.js',
-    library: 'kDom',
-    // libraryExport: 'default',
-    libraryTarget: 'umd'
+    path: __dirname + "/dist",
+    filename: "k-dom.js",
+    library: "kDom",
+    libraryTarget: "umd",
+    globalObject: "this"
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader'
+        loader: "awesome-typescript-loader"
       },
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.js$/,
-        loader: 'source-map-loader'
+        loader: "source-map-loader"
       }
     ]
-  },
-  devtool: '#nosources-source-map'
+  }
 };
