@@ -4,106 +4,71 @@ Helper functions for DOM manipulation
 
 ## Installation
 
-### Node.js
-
 ```
 npm install k-dom
 ```
 
-### Browser
-
-```
-<script src="node_modules/k-http/dist/k-dom.min.js"></script>
-```
-
-## Documentation
+## Quick Start
 
 ```javascript
 import {
   $,
-  createEvent,
+  $$,
   DocFrag,
-  h,
   cloneNode,
+  clearNode,
   replaceNode,
-  style,
-  svg,
-  readFileAsDataUrl,
-  append,
-  prepend,
-  string2El
-} from 'k-dom';
-```
+  removeNode,
+  addClass,
+  removeClass,
+  toggleClass,
+  hasClass,
+  cloneScriptElement,
+  createStyleElement,
+  filterVisibleElements,
+  html2DOM
+} from "k-dom";
 
-- `$(sel: string, ctx?: HTMLElement)`
+const myElement = $(".my-element");
 
-```javascript
-$('#app'); // same as document.querySelector('#app')
-$('#my-div', myNode); // same as myNode.querySelector('#my-div')
-```
+const myElements = $$(".my-elements"); // myElements is an array
+myElements.forEach((el) => console.log(el));
 
-- `createEvent(name: string, props: object)`
+const frag = DocFrag(
+  document.createElement("div"),
+  document.createElement("ul"),
+  document.createElement("p")
+); // Create a DocumentFragment
 
-```javascript
-window.addEventListener('myevent', e => console.log(e.detail));
-window.dispatchEvent('myevent', { test: true }); // will log { test: true }
-```
+const clonedEl = cloneNode(myElement);
 
-- `DocFrag(...els: Array<HTMLElement>)`
+clearNode(clonedEl); // Remove all its children
 
-```javascript
-const docFrag = DocFrag(div1, div2, div3); // div1, div2, div3 will be children of the document fragment
-```
+replaceNode(clonedEl, myElement); // Replace myElement with clonedEl
 
-- `h(tagName: string, props?: object, ...children: Array<HTMLElement>)`
+removeNode(clonedEl);
 
-```javascript
-const div = h(
-  'div',
-  { id: 'div1' },
-  h(
-    'div',
-    { id: 'div1-1' },
-    h('div', { id: 'div1-1-1' }, h('div', { id: 'div1-1-1-1' }, 'sub divs can be nested blublublu...'))
-  ),
-  h(
-    'div',
-    { id: 'div1-2' },
-    h('div', { id: 'div1-2-1' }, h('div', { id: 'div1-2-1-1' }, 'sub divs can be nested blublublu...'))
-  )
-);
-```
+addClass(clonedEl, "cloned", "removed", "invisible");
+removeClass(clonedEl, "cloned", "removed", "invisible");
+toggleClass(clonedEl, "cloned", "removed", "invisible");
+hasClass(clonedEl, "cloned");
 
-- `cloneNode(el: Node)`
+const script = cloneScriptElement($("script"));
 
-- `replaceNode(el: Node, newEl: Node)`
+const style = createStyleElement(`
+  body {
+    color: red;
+  }
+`);
 
-- `style(el: HTMLElement, styles: object)`
+const visibleElements = filterVisibleElements(document.body.children);
+visibleElements.forEach((el) => console.log(el));
 
-```javascript
-style(div, { color: '#fff' });
-```
-
-- `svg(tagName: string, props: any = {}, ...children: Array<HTMLElement>)`
-
-```javascript
-const polygon = svg('polygon', { points: '0,100 50,25 50,75 100,0' });
-```
-
-- `readFileAsDataURL(file: File)`
-
-```javascript
-readFileAsDataURL(input.files[0]).then(dataUrl => {
-  console.log(dataUrl);
-});
-```
-
-- `append(parent: Node, child: Node)`
-
-- `prepend(parent: Node, child: Node)`
-
-- `string2El(s: string)`
-
-```javascript
-const div = string2El('<div>My Div</div>');
+const ul = html2DOM(`
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+`);
 ```

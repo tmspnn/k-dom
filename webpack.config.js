@@ -1,24 +1,29 @@
 module.exports = {
   mode: "production",
-  devtool: "cheap-eval-source-map",
-  entry: __dirname + "/src/k-dom.ts",
+  devtool: "cheap-module-source-map",
+  context: __dirname + "/src",
+  entry: "./k-dom.js",
   output: {
     path: __dirname + "/dist",
     filename: "k-dom.js",
-    library: "kDom",
-    libraryTarget: "umd",
+    library: {
+      name: "kdom",
+      type: "umd2",
+      export: "default"
+    },
     globalObject: "this"
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        loader: "awesome-typescript-loader"
-      },
-      {
-        enforce: "pre",
-        test: /\.js$/,
-        loader: "source-map-loader"
+        test: /\.?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [["@babel/preset-env"]]
+          }
+        }
       }
     ]
   }
