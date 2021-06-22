@@ -14,18 +14,12 @@ export function replaceNode(newEl: Node, el: Node): void;
 
 export function removeNode(el: Node): void;
 
-export function addClass(el: HTMLElement, ...classNames: string[]): void;
+export function cloneScript(el: HTMLScriptElement): HTMLScriptElement;
 
-export function removeClass(el: HTMLElement, ...classNames: string[]): void;
+export function createStyle(texts: string): HTMLStyleElement;
 
-export function toggleClass(el: HTMLElement, ...classNames: string[]): void;
+export function filterVisible(els: Array<HTMLElement> | NodeList): Array<HTMLElement>;
 
-export function hasClass(el: HTMLElement, className: string): boolean;
+export function DOM(html: string): null | HTMLElement;
 
-export function cloneScriptElement(el: HTMLScriptElement): HTMLScriptElement;
-
-export function createStyleElement(texts: string): HTMLStyleElement;
-
-export function filterVisibleElements(els: Array<HTMLElement> | NodeList): Array<HTMLElement>;
-
-export function html2DOM(html: string): null | HTMLElement;
+export function scrollTo(el: HTMLElement, scrollTop: number): void;
