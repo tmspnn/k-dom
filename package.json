@@ -1,12 +1,12 @@
 {
   "name": "k-dom",
-  "version": "0.3.0",
-  "description": "Helper functions for DOM manipulation",
+  "version": "0.3.1",
+  "description": "Helper functions for DOM manipulation.",
   "main": "dist/k-dom.js",
   "types": "types/k-dom.d.ts",
   "scripts": {
     "test": "ava",
-    "build": " NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
