@@ -24,17 +24,26 @@ const dom = new JSDOM(
   <div class="remove-me">Remove Me</div>
   <script>${kdomJS}</script>
 </body>
-</html>
-`,
+</html>`,
   {
     runScripts: "dangerously"
   }
 );
 
-// Run testcases
-test("var", (t) => {
+test("Global variable", (t) => {
   with (dom.window) {
     t.is(typeof kdom, "object");
+  }
+});
+
+test("Prototype manipulation", (t) => {
+  with (dom.window) {
+    t.is(EventTarget.prototype.on, EventTarget.prototype.addEventListener);
+    t.is(EventTarget.prototype.off, EventTarget.prototype.removeEventListener);
+    t.is(typeof Element.prototype.addClass, "function");
+    t.is(typeof Element.prototype.removeClass, "function");
+    t.is(typeof Element.prototype.toggleClass, "function");
+    t.is(typeof Element.prototype.hasClass, "function");
   }
 });
 
@@ -54,7 +63,14 @@ test("DocFrag", (t) => {
   with (dom.window) {
     const { DocFrag } = kdom;
 
-    t.is(DocFrag() instanceof DocumentFragment, true);
+    t.is(
+      DocFrag(
+        document.createElement("div"),
+        document.createElement("ul"),
+        document.createElement("a")
+      ) instanceof DocumentFragment,
+      true
+    );
   }
 });
 
@@ -108,42 +124,22 @@ test("removeNode", (t) => {
   }
 });
 
-test("addClass, removeClass, toggleClass, hasClass", (t) => {
+test("cloneScript", (t) => {
   with (dom.window) {
-    const { $, addClass, removeClass, toggleClass, hasClass } = kdom;
-
-    const testDiv = $("#test");
-
-    addClass(testDiv, "a");
-    t.is(hasClass(testDiv, "a"), true);
-
-    removeClass(testDiv, "a");
-    t.is(hasClass(testDiv, "a"), false);
-
-    toggleClass(testDiv, "a");
-    t.is(hasClass(testDiv, "a"), true);
-
-    toggleClass(testDiv, "a");
-    t.is(hasClass(testDiv, "a"), false);
-  }
-});
-
-test("cloneScriptElement", (t) => {
-  with (dom.window) {
-    const { $, cloneScriptElement } = kdom;
+    const { $, cloneScript } = kdom;
 
     const target = $("script");
-    const script = cloneScriptElement(target);
+    const script = cloneScript(target);
 
     t.is(script.textContent, kdomJS);
   }
 });
 
-test("createStyleElement", (t) => {
+test("createStyle", (t) => {
   with (dom.window) {
-    const { $, createStyleElement } = kdom;
+    const { $, createStyle } = kdom;
 
-    const style = createStyleElement(`
+    const style = createStyle(`
       body {
         color: red;
       }
@@ -155,21 +151,21 @@ test("createStyleElement", (t) => {
   }
 });
 
-test("filterVisibleElements", (t) => {
+test("filterVisible", (t) => {
   with (dom.window) {
-    const { $, filterVisibleElements } = kdom;
+    const { $, filterVisible } = kdom;
 
-    const filtered = filterVisibleElements(document.body);
+    const filtered = filterVisible(document.body);
 
     t.is(filtered.length, 0);
   }
 });
 
-test("html2DOM", (t) => {
+test("DOM", (t) => {
   with (dom.window) {
-    const { html2DOM } = kdom;
+    const { DOM } = kdom;
 
-    const ul = html2DOM(`
+    const ul = DOM(`
       <ul>
         <li>1</li>
         <li>2</li>
@@ -179,5 +175,15 @@ test("html2DOM", (t) => {
 
     t.is(ul instanceof HTMLUListElement, true);
     t.is(ul.children.length, 3);
+  }
+});
+
+test("scrollTo", (t) => {
+  with (dom.window) {
+    const { scrollTo } = kdom;
+
+    scrollTo(document.body, 100);
+
+    t.is(document.body.scrollTop, 100);
   }
 });

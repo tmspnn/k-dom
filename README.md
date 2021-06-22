@@ -19,56 +19,54 @@ import {
   clearNode,
   replaceNode,
   removeNode,
-  addClass,
-  removeClass,
-  toggleClass,
-  hasClass,
-  cloneScriptElement,
-  createStyleElement,
-  filterVisibleElements,
-  html2DOM
+  cloneScript,
+  createStyle,
+  filterVisible,
+  DOM,
+  scrollTo
 } from "k-dom";
 
-const myElement = $(".my-element");
+$(".foo").addClass("foo", "bar", "zoo");
 
-const myElements = $$(".my-elements"); // myElements is an array
-myElements.forEach((el) => console.log(el));
+$$(".bar").forEach((el) => el.removeClass("foo", "bar"));
 
+// Create a DocumentFragment with children
 const frag = DocFrag(
   document.createElement("div"),
   document.createElement("ul"),
   document.createElement("p")
-); // Create a DocumentFragment
+);
 
-const clonedEl = cloneNode(myElement);
+const clonedEl = cloneNode($(".foo"));
 
-clearNode(clonedEl); // Remove all its children
+// Remove all its children
+clearNode(clonedEl);
 
-replaceNode(clonedEl, myElement); // Replace myElement with clonedEl
+// Replace myElement with clonedEl
+replaceNode(clonedEl, myElement);
 
 removeNode(clonedEl);
 
-addClass(clonedEl, "cloned", "removed", "invisible");
-removeClass(clonedEl, "cloned", "removed", "invisible");
-toggleClass(clonedEl, "cloned", "removed", "invisible");
-hasClass(clonedEl, "cloned");
+const script = cloneScript($("script"));
 
-const script = cloneScriptElement($("script"));
-
-const style = createStyleElement(`
+const style = createStyle(`
   body {
     color: red;
   }
 `);
 
-const visibleElements = filterVisibleElements(document.body.children);
-visibleElements.forEach((el) => console.log(el));
+// Visible UI elements
+const visibleElements = filterVisible(document.body.children);
 
-const ul = html2DOM(`
+// HTML to DOM Element
+const ul = DOM(`
   <ul>
     <li>1</li>
     <li>2</li>
     <li>3</li>
   </ul>
 `);
+
+// Set scrollTop of document body
+scrollTo(document.body, 100);
 ```

@@ -1,6 +1,22 @@
 EventTarget.prototype.on = EventTarget.prototype.addEventListener;
 EventTarget.prototype.off = EventTarget.prototype.removeEventListener;
 
+Element.prototype.addClass = function (...classNames) {
+  this.classList.add(...classNames);
+};
+
+Element.prototype.removeClass = function (...classNames) {
+  this.classList.remove(...classNames);
+};
+
+Element.prototype.toggleClass = function (className) {
+  this.classList.toggle(className);
+};
+
+Element.prototype.hasClass = function (className) {
+  return this.classList.contains(className);
+};
+
 export function $(sel, ctx = document) {
   return ctx.querySelector(sel);
 }
@@ -32,30 +48,12 @@ export function replaceNode(newEl, el) {
 }
 
 export function removeNode(node) {
-  if (typeof node.remove == "function") {
-    node.remove();
-  } else if (node.parentNode) {
+  if (node.parentNode) {
     node.parentNode.removeChild(node);
   }
 }
 
-export function addClass(el, ...classNames) {
-  el.classList.add(...classNames);
-}
-
-export function removeClass(el, ...classNames) {
-  el.classList.remove(...classNames);
-}
-
-export function toggleClass(el, ...classNames) {
-  el.classList.toggle(...classNames);
-}
-
-export function hasClass(el, className) {
-  return el.classList.contains(className);
-}
-
-export function cloneScriptElement(el) {
+export function cloneScript(el) {
   const script = document.createElement("script");
 
   if (el.src) {
@@ -64,22 +62,21 @@ export function cloneScriptElement(el) {
     script.textContent = el.textContent;
   }
 
-  if (el.id) script.id = el.id;
   if (el.type) script.type = el.type;
 
   return script;
 }
 
-export function createStyleElement(texts) {
+export function createStyle(text) {
   const style = document.createElement("style");
-  style.textContent = texts;
+  style.textContent = text;
   return style;
 }
 
-export function filterVisibleElements(els) {
+export function filterVisible(els) {
   const visibleElements = [];
 
-  for (let i = 0; i < els.length; i++) {
+  for (let i = 0; i < els.length; ++i) {
     const el = els[i];
     if (el.offsetParent || el.offsetWidth > 0) {
       visibleElements.push(el);
@@ -89,11 +86,14 @@ export function filterVisibleElements(els) {
   return visibleElements;
 }
 
-const parser = new DOMParser();
-
-export function html2DOM(html) {
+export function DOM(html) {
+  const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
   return doc.body.firstChild;
+}
+
+export function scrollTo(el, scrollTop) {
+  el.scrollTop = scrollTop;
 }
 
 export default {
@@ -104,12 +104,9 @@ export default {
   clearNode,
   replaceNode,
   removeNode,
-  addClass,
-  removeClass,
-  toggleClass,
-  hasClass,
-  cloneScriptElement,
-  createStyleElement,
-  filterVisibleElements,
-  html2DOM
+  cloneScript,
+  createStyle,
+  filterVisible,
+  DOM,
+  scrollTo
 };
